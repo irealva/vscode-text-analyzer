@@ -1,0 +1,73 @@
+{
+	"name": "text-analyzer",
+	"displayName": "text-analyzer",
+	"description": "VSCode extension to analyze text",
+	"author": "Irene Alvarado",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.46.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:text-analyzer.frequentWords",
+		"onCommand:text-analyzer.ngrams",
+		"onCommand:text-analyzer.tfidf"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "text-analyzer.frequentWords",
+				"title": "Text Analyzer: Frequent Words"
+			},
+			{
+				"command": "text-analyzer.ngrams",
+				"title": "Text Analyzer: Ngrams"
+			},
+			{
+				"command": "text-analyzer.tfidf",
+				"title": "Text Analyzer: Frequency–inverse Document Frequency (tfidf)"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run package",
+		"compile": "webpack --config ./build/node-extension.webpack.config.js",
+		"watch": "webpack --watch --config ./build/node-extension.webpack.config.js",
+		"package": "webpack --mode production --devtool hidden-source-map --config ./build/node-extension.webpack.config.js",
+		"test-compile": "tsc -p ./",
+		"test-watch": "yarn copy-files && tsc -watch -p ./",
+		"pretest": "yarn run test-compile && yarn run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js",
+		"copy-files": "copyfiles -f src/test/files/*.txt out/test/files/"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^14.14.13",
+		"@types/vscode": "^1.46.0",
+		"@typescript-eslint/eslint-plugin": "^4.9.0",
+		"@typescript-eslint/parser": "^4.9.0",
+		"eslint": "^7.15.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"ts-loader": "^8.0.11",
+		"typescript": "^4.1.2",
+		"vscode-test": "^1.4.1",
+		"webpack": "^5.10.0",
+		"webpack-cli": "^4.2.0"
+	},
+	"dependencies": {
+		"@types/natural": "^2.1.1",
+		"@types/stopword": "^1.0.0",
+		"compromise": "^13.7.0",
+		"compromise-ngrams": "^0.0.5",
+		"copyfiles": "^2.4.1",
+		"install": "^0.13.0",
+		"natural": "^2.1.5",
+		"stopword": "^1.0.5"
+	}
+}

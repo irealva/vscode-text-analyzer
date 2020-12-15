@@ -1,0 +1,4 @@
+./gettysburg.txt
+./covidpaper.txt
+./ihaveadream.txt
+./big2.txt
