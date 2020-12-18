@@ -2,13 +2,14 @@
  * @fileoverview This code contains all the main extension commands including:
  * 1. most frequent words in a text
  * 2. ngrams
- * 3. frequency–inverse document frequency (tfIdf) of a collection of files
+ * 3. topics
+ * 4. frequency–inverse document frequency (tfIdf) of a collection of files
  */
 
 import * as vscode from 'vscode';
 import { createFilePath, getFileName, pickFiles, getActiveFile } from './utils/fileio';
 import { showQuickPick, showNumberInputBox } from './utils/ui'; 
-import { analyzeFrequentWords, analyzeNgrams, analyzeTfidf } from './textAnalyze';
+import { analyzeFrequentWords, analyzeNgrams, analyzeTfidf, analyzeTopics } from './textAnalyze';
 
 /**
  * Two ways to select files
@@ -31,7 +32,8 @@ const modes: Record<ModeTypes, string> = {
 enum Commands {
 	frequent = "frequentWords",
 	ngrams = "ngrams",
-	tfidf = "tfidf",
+	topics = "topics",
+	tfidf = "tfidf"
 }
 
 /**
@@ -93,6 +95,32 @@ export function activate(context: vscode.ExtensionContext) {
 		const fileName = getFileName(fileInfo.input);
 		const newFile = createFilePath(fileInfo.input, `${Commands.ngrams}-${fileName}.txt`);
 		const promise = analyzeNgrams(fileInfo.documentText, newFile, ngrams);
+		return promise;
+	});
+
+	/**
+	 * Topics command
+	 */
+	const topicsCommand = vscode.commands.registerCommand(`text-analyzer.${Commands.topics}`, async (isTest = false) => {
+		// this is a hack because test cases fail with showQuickPick() and showInputBox()
+		// have to handle a rejected promise in a different way to make this work with tests
+		// more in the utils/ui.ts file
+		const modeType = isTest ? 'active' : await getMode(modes);
+
+		let fileInfo;
+		if (modeType === 'active' && vscode.window.activeTextEditor) {
+			fileInfo = getActiveFile(vscode.window.activeTextEditor);
+		} else {
+			fileInfo = await pickFiles();
+		}
+
+		if (fileInfo === null) {
+			return;
+		}
+
+		const fileName = getFileName(fileInfo.input);
+		const newFile = createFilePath(fileInfo.input, `${Commands.topics}-${fileName}.txt`);
+		const promise = analyzeTopics(fileInfo.documentText, newFile);
 		return promise;
 	});
 

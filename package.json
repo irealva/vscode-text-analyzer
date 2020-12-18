@@ -13,6 +13,7 @@
 	"activationEvents": [
 		"onCommand:text-analyzer.frequentWords",
 		"onCommand:text-analyzer.ngrams",
+		"onCommand:text-analyzer.topics",
 		"onCommand:text-analyzer.tfidf"
 	],
 	"main": "./dist/extension.js",
@@ -25,6 +26,10 @@
 			{
 				"command": "text-analyzer.ngrams",
 				"title": "Text Analyzer: Ngrams"
+			},
+			{
+				"command": "text-analyzer.topics",
+				"title": "Text Analyzer: Document topics"
 			},
 			{
 				"command": "text-analyzer.tfidf",

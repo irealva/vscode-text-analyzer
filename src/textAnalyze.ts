@@ -9,6 +9,7 @@ import { createFile } from './utils/fileio';
 import { cleanupText, splitOnNewLines, removeStopwords, tokenizeWords } from './utils/nlp';
 import { getNgrams, formatNgrams } from './nlp/ngrams';
 import { getWordCount, formatWordCount } from './nlp/frequentWords';
+import { getTopics } from './nlp/topics';
 import { getTfidf } from './nlp/tfifd';
 
 /**
@@ -74,6 +75,36 @@ export function analyzeNgrams(text: string, newFile: Uri, ngramsSize = 2): Thena
 			vscode.window.showInformationMessage('Complete: Ngrams analysis');
 			resolve(ngramsText);
 			return ngramsText;
+		});
+	});
+}
+
+/**
+ * Obtain topics
+ * 
+ * @param {string} text text of original document to analyze
+ * @param {Uri} newFile path of new file that will contain ngrams
+ * 
+ * @return {Thenable<string>} a string with ngrams
+ */
+export function analyzeTopics(text: string, newFile: Uri): Thenable<string> {
+	return vscode.window.withProgress({
+		location: ProgressLocation.Notification,
+		title: "Topics analysis progress",
+		cancellable: true
+	},
+	p => {
+		return new Promise((resolve, reject) => {
+			p.report({message: 'Analyzing topics...' });
+			const textCleanup = cleanupText(text);
+
+			const topics = getTopics(textCleanup);
+			const topicsText = formatWordCount(topics);
+
+			createFile(newFile, topicsText);
+
+			resolve(topicsText);
+			return topicsText;
 		});
 	});
 }

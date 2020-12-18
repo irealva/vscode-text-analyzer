@@ -43,6 +43,21 @@ suite('Extension Test Suite', () => {
 		await sleep(500);
 	});
 
+	test('should return correct topics first line', async () => {
+		const uri = vscode.Uri.file(
+			path.join(__dirname + testFolderLocation + 'ihaveadream.txt')
+		);
+
+		const document = await vscode.workspace.openTextDocument(uri);
+		const editor = await vscode.window.showTextDocument(document);
+		await sleep(500);
+
+		const prom = await vscode.commands.executeCommand('text-analyzer.topics', true);
+		const firstLine = String(prom).split('\n')[0];
+		assert.strictEqual("america, 5", firstLine);
+		await sleep(500);
+	});
+
 	test('should return correct tfidf first line', async () => {
 		const uri = vscode.Uri.file(
 			path.join(__dirname + testFolderLocation + 'files.txt')

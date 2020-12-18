@@ -32,6 +32,16 @@ A new text file is created in the same directory with the results.
 
 ![Ngrams GIF](./examples/ngrams.gif)
 
+### Topics
+
+Called `Text Analyzer: Topics`: this command will extract topics (entities like places, people, and organizations) from a text document.
+
+You have the option of providing the source file as the current file in the editor or thorugh a file picker. 
+
+A new text file is created in the same directory with the results.
+
+![Ngrams GIF](./examples/topics.gif)
+
 ### TfIdf
 
 Called `Text Analyzer: Frequency–inverse Document Frequency (tfidf)`: this command will apply a most tfidf analysis to a set of text files provided through a *source file*.
